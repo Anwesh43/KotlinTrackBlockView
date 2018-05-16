@@ -90,30 +90,32 @@ class TrackBlockView (ctx : Context) : View(ctx) {
             val h : Float = canvas.height.toFloat()
             val size : Float = Math.min(w, h)/20
             paint.color = Color.WHITE
+            canvas.save()
+            canvas.translate(w/2, h/2)
             for (i in 0..1) {
                 canvas.save()
-                canvas.translate(w/2, h/2)
                 canvas.rotate(-90f * i)
                 canvas.save()
                 val path = Path()
-                path.addRect(RectF(-size/2, -size/2, size/2, -size/2 + w/2 * (1 - state.scales[i * 2])), Path.Direction.CW)
+                path.addRect(RectF(-size/2, -size/2 + w/2 * (state.scales[i * 2]) * i, size/2, -size/2 + w/2 * (1 - (state.scales[i * 2] * (1-i)))), Path.Direction.CW)
                 canvas.clipPath(path)
                 for (j in 0..9) {
                     val gap : Float = (w/20)
                     canvas.save()
-                    canvas.translate(0f, gap / 2 + gap * i)
+                    canvas.translate(0f, gap / 2 + gap * j)
                     canvas.drawRect(RectF(-gap/8, -gap/4, gap/8, gap/4), paint)
                     canvas.restore()
                 }
                 canvas.restore()
-                paint.color = Color.parseColor("#f39c12")
-                canvas.save()
-                canvas.translate(0f, w/2 * (1 - state.scales[0]) - w/2 * state.scales[2])
-                canvas.rotate(-90f * state.scales[1])
-                canvas.drawRect(RectF(-size/4, -size/2, size/4, size/2), paint)
-                canvas.restore()
                 canvas.restore()
             }
+            paint.color = Color.parseColor("#f39c12")
+            canvas.save()
+            canvas.translate(w/2 * state.scales[2], w/2 * (1 - state.scales[0]))
+            canvas.rotate(90f * state.scales[1])
+            canvas.drawRect(RectF(-size/4, -size/2, size/4, size/2), paint)
+            canvas.restore()
+            canvas.restore()
         }
 
         fun update(stopcb : (Float) -> Unit) {
