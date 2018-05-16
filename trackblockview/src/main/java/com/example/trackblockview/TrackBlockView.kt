@@ -4,6 +4,7 @@ package com.example.trackblockview
  * Created by anweshmishra on 17/05/18.
  */
 
+import android.app.Activity
 import android.view.View
 import android.content.Context
 import android.graphics.*
@@ -145,6 +146,13 @@ class TrackBlockView (ctx : Context) : View(ctx) {
             trackBlock.startUpdating {
                 animator.start()
             }
+        }
+    }
+    companion object {
+        fun create(activity : Activity) : TrackBlockView  {
+            val view : TrackBlockView = TrackBlockView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
 }
