@@ -120,4 +120,27 @@ class TrackBlockView (ctx : Context) : View(ctx) {
         }
 
     }
+
+    data class Renderer (var view : TrackBlockView) {
+
+        val trackBlock : TrackBlock = TrackBlock(0)
+
+        val animator : Animator = Animator(view)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#212121"))
+            trackBlock.draw(canvas, paint)
+            animator.animate {
+                trackBlock.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            trackBlock.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
